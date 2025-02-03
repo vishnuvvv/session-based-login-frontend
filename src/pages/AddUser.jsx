@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddUser = () => {
   const [user, setUser] = useState({
@@ -12,6 +13,8 @@ const AddUser = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false); // Success state to show success message
+
+  const navigate = useNavigate();
 
   // Handle input field changes
   const handleChange = (e) => {
@@ -28,6 +31,7 @@ const AddUser = () => {
     setLoading(true);
     setError(null);
     setSuccess(false); // Reset success state
+    if (success) navigate("/admin");
 
     try {
       const response = await axios.post("http://localhost:5000/user/add", user);
@@ -39,6 +43,8 @@ const AddUser = () => {
         password: "",
         mobileNumber: "",
       }); // Reset the form
+
+      navigate(`/admin`);
     } catch (err) {
       setError("Error adding user. Please try again.");
       console.error(err);

@@ -21,7 +21,7 @@ const Login = () => {
         { email, password },
         { withCredentials: true }
       );
-
+      localStorage.setItem("user", data);
       console.log(data);
       if (data.role === "admin") {
         navigate("/admin");

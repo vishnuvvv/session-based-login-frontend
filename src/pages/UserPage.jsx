@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom"; // Import useParams to access the route parameters
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 
 const User = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [user, setUser] = useState({
     name: "",
@@ -48,6 +49,14 @@ const User = () => {
       .catch((err) => {
         console.error("Error updating user:", err);
       });
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    // Clear user details from localStorage
+    localStorage.removeItem("user");
+    setUser({ name: "", email: "", mobileNumber: "", password: "" }); // Reset user state
+    navigate("/"); // Redirect to the login page
   };
 
   if (loading) {
@@ -151,6 +160,16 @@ const User = () => {
         ) : (
           <p className="text-center text-lg text-gray-700">User not found</p>
         )}
+
+        {/* Logout Button */}
+        <div className="mt-6 text-center">
+          <button
+            onClick={handleLogout}
+            className="py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );
